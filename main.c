@@ -21,7 +21,7 @@ WinMain(
         UNREFERENCED_PARAMETER(hPrevInstance);
         UNREFERENCED_PARAMETER(lpCmdLine);
 
-        WNDCLASSEX wc = {0};
         HWND hwnd;
         MSG msg;
+        WNDCLASSEX wc = {0};
 }
