@@ -39,6 +39,14 @@ typedef struct GameGlobalState {
 	HWND hwnd_main;
 } GameState;
 
+static_assert(GRID_WIDTH > 0, "GRID_WIDTH must be positive.");
+static_assert(GRID_HEIGHT > 0, "GRID_HEIGHT must be positive.");
+static_assert(CELL_SIZE > 0, "CELL_SIZE must be positive.");
+static_assert(INITIAL_SNEK_LENGTH > 0, "INITIAL_SNEK_LENGTH must be positive.");
+static_assert(MAX_SNEK_LENGTH >= INITIAL_SNEK_LENGTH, "MAX_SNEK_LENGTH must be greater than or equal to INITIAL_SNEK_LENGTH.");
+static_assert(MAX_SNEK_LENGTH <= (GRID_WIDTH * GRID_HEIGHT), "MAX_SNEK_LENGTH cannot exceed total grid cells.");
+static_assert(GAME_SPEED > 0, "INITIAL_GAME_SPEED must be positive.");
+
 extern GameState game_state;
 
 #endif // SNAKE_H_
