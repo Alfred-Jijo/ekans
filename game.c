@@ -69,26 +69,33 @@ draw_game (
 void
 generate_food (void)
 {
-
 }
 
-void
-handle_input (
-        Direction direction,
-        WPARAM wParam)
+void handle_input(
+    Direction direction,
+    WPARAM wParam)
 {
-    if (game_state.game_over) {
-        if (wParam == 'R' || wParam == 'r') {
-            restart_game();
+        if (game_state.game_over) {
+                if (wParam == 'R' || wParam == 'r') {
+                        restart_game();
+                }
+                return;
         }
-        return;
-    }
 
-    // Prevent the snake from reversing direction
-    if ((direction == DIR_UP && game_state.current_direction != DIR_DOWN) ||
-        (direction == DIR_DOWN && game_state.current_direction != DIR_UP) ||
-        (direction == DIR_LEFT && game_state.current_direction != DIR_RIGHT) ||
-        (direction == DIR_RIGHT && game_state.current_direction != DIR_LEFT)) {
-        game_state.input_direction = direction;
-    }
+        // Prevent the snake from reversing direction
+        if ((direction == DIR_UP && game_state.current_direction != DIR_DOWN) ||
+            (direction == DIR_DOWN && game_state.current_direction != DIR_UP) ||
+            (direction == DIR_LEFT && game_state.current_direction != DIR_RIGHT) ||
+            (direction == DIR_RIGHT && game_state.current_direction != DIR_LEFT)) {
+                game_state.input_direction = direction;
+        }
+
+        switch (wParam)
+        {
+                case VK_UP: break;
+                case VK_DOWN: break;
+                case VK_LEFT: break;
+                case VK_RIGHT: break;
+                default: break;
+        }
 }
