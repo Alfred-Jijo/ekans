@@ -35,6 +35,21 @@ WindowProc (
 {
         switch (msg)
         {
+                case WM_CREATE: break;
+                case WM_TIMER: break;
+                case WM_PAINT: break;
+                case WM_KEYDOWN: 
+                        handle_input(game_state.input_direction, wParam);
+                        break;
+                case WM_DESTROY: 
+                        if (game_state.timer_id != 0) {
+                                KillTimer(hwnd, game_state.timer_id);
+                                game_state.timer_id = 0;
+                        }
+                        PostQuitMessage(0);
+                        break;
+                case WM_ERASEBKGND: 
+                        return 1; // Prevent flickering by not erasing background
                 default: return DefWindowProc(hwnd, msg, wParam, lParam);
         }
 
