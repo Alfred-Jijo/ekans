@@ -4,7 +4,7 @@
 extern void init_game(void);
 extern void update_game(void);
 extern void draw_game(HDC hdc);
-extern void generate_food(void);
+// extern void generate_food(void);
 extern void handle_input(Direction direction, WPARAM wParam);
 extern void restart_game(void);
 
