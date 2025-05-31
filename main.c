@@ -10,3 +10,18 @@ extern void restart_game(void);
 
 // Forward declaration of the window procedure
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+int
+WinMain(
+        HINSTANCE hInstance,
+        HINSTANCE hPrevInstance,
+        LPSTR lpCmdLine,
+        int nCmdShow)
+{
+        UNREFERENCED_PARAMETER(hPrevInstance);
+        UNREFERENCED_PARAMETER(lpCmdLine);
+
+        WNDCLASSEX wc = {0};
+        HWND hwnd;
+        MSG msg;
+}
