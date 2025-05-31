@@ -74,9 +74,13 @@ generate_food (void)
 
 void
 handle_input (
-        Direction direction)
+        Direction direction,
+        WPARAM wParam)
 {
     if (game_state.game_over) {
+        if (wParam == 'R' || wParam == 'r') {
+            restart_game();
+        }
         return;
     }
 
