@@ -26,4 +26,19 @@ typedef enum {
 	DIR_NONE 
 } Direction;
 
+typedef struct GameGlobalState {
+	POINT snake[MAX_SNEK_LENGTH];
+	int snake_length;
+	POINT food;
+	Direction current_direction;
+	Direction input_direction;
+	bool game_over;
+	int score;
+	UINT_PTR timer_id;
+	int game_speed;
+	HWND hwnd_main;
+} GameState;
+
+extern GameState game_state;
+
 #endif // SNAKE_H_
