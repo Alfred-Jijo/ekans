@@ -11,6 +11,19 @@ enum {
 	CELL_SIZE = 20,
 	MAX_SNEK_LENGTH = (GRID_WIDTH * GRID_HEIGHT) - 1,
 	INITIAL_SNEK_LENGTH = 5,
+	GAME_TIME_ID = 1,
+	GAME_SPEED = 150, // milliseconds
+
+	WINDOW_WIDTH = (GRID_WIDTH * CELL_SIZE),
+	WINDOW_HEIGHT = (GRID_HEIGHT * CELL_SIZE),
 };
+
+typedef enum {
+	DIR_UP,
+	DIR_DOWN,
+	DIR_LEFT,
+	DIR_RIGHT,
+	DIR_NONE 
+} Direction;
 
 #endif // SNAKE_H_
