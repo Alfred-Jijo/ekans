@@ -21,4 +21,16 @@ init_game (void)
             game_state.snake[i].x = start_x - i;
             game_state.snake[i].y = start_y;
         }
+
+        generate_food();
+
+        if (game_state.hwnd_main == NULL) {
+            fprintf(stderr, "Error: hwnd_main is not set.\n");
+            exit(EXIT_FAILURE);
+        }
+        
+        if (game_state.timer_id) {
+                KillTimer(game_state.hwnd_main, game_state.timer_id);
+        }
+        game_state.timer_id = SetTimer(game_state.hwnd_main, GAME_TIMER_ID, game_state.game_speed, NULL);
 }
