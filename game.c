@@ -82,6 +82,7 @@ void handle_input(
                 return;
         }
 
+        // Shouldn't need this check, but just in case
         // Prevent the snake from reversing direction
         if ((direction == DIR_UP && game_state.current_direction != DIR_DOWN) ||
             (direction == DIR_DOWN && game_state.current_direction != DIR_UP) ||
