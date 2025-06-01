@@ -44,7 +44,8 @@ WindowProc(
 		handle_input(game_state.input_direction, wParam);
 		break;
 	case WM_DESTROY:
-		if (game_state.timer_id != 0) {
+		if (game_state.timer_id != 0)
+		{
 			KillTimer(hwnd, game_state.timer_id);
 			game_state.timer_id = 0;
 		}
