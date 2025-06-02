@@ -21,3 +21,64 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <stdbool.h>
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+enum {
+    GRID_WIDTH = 30,
+    GRID_HEIGHT = 20,
+    CELL_SIZE = 20,
+    MAX_SNEK_LENGTH = (GRID_WIDTH * GRID_HEIGHT) -1, // Max number of segments snake can have
+    INITIAL_SNEK_LENGTH = 5,
+    GAME_TIMER_ID = 1,
+    GAME_SPEED = 150, // milliseconds
+
+    WINDOW_WIDTH = (GRID_WIDTH * CELL_SIZE),
+    WINDOW_HEIGHT = (GRID_HEIGHT * CELL_SIZE)
+};
+
+static_assert(GRID_WIDTH > 0, "GRID_WIDTH must be positive.");
+static_assert(GRID_HEIGHT > 0, "GRID_HEIGHT must be positive.");
+static_assert(CELL_SIZE > 0, "CELL_SIZE must be positive.");
+static_assert(INITIAL_SNEK_LENGTH > 0, "INITIAL_SNEK_LENGTH must be positive.");
+static_assert(MAX_SNEK_LENGTH >= INITIAL_SNEK_LENGTH, "MAX_SNEK_LENGTH must be greater than or equal to INITIAL_SNEK_LENGTH.");
+static_assert(MAX_SNEK_LENGTH <= (GRID_WIDTH * GRID_HEIGHT), "MAX_SNEK_LENGTH cannot exceed total grid cells."); 
+static_assert(GAME_SPEED > 0, "GAME_SPEED must be positive.");
+
+typedef enum {
+        DIR_UP,
+        DIR_DOWN,
+        DIR_LEFT,
+        DIR_RIGHT,
+        DIR_NONE 
+} Direction;
+
+typedef struct GameGlobalState {
+    POINT snake[MAX_SNEK_LENGTH]; 
+    int snake_length;
+    POINT food;
+    Direction current_direction;
+    Direction input_direction; 
+    bool game_over;
+    int score;
+    UINT_PTR timer_id;
+    int game_speed; 
+    HWND hwnd_main; 
+} GameState;
+
+GameState game_state = {
+    .snake_length = INITIAL_SNEK_LENGTH,
+    .current_direction = DIR_RIGHT,
+    .input_direction = DIR_RIGHT,
+    .game_over = false,
+    .score = 0,
+    .timer_id = 0, // Will be set by SetTimer
+    .game_speed = GAME_SPEED,
+    .hwnd_main = NULL // Will be set after window creation
+};
