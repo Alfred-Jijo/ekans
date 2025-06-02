@@ -66,10 +66,24 @@ draw_game (
 
 }
 
-// void
-// generate_food (void)
-// {
-// }
+void
+generate_food (void)
+{
+        bool free_position;
+        do {
+                free_position = true;
+                game_state.food.x = rand() % GRID_WIDTH;
+                game_state.food.y = rand() % GRID_HEIGHT;
+
+                for (int i = 0; i < game_state.snake_length; ++i) {
+                        if (game_state.food.x = game_state.snake[i].x &&
+                            game_state.food.y == game_state.snake[i].y) {
+                                free_position = false;
+                                break;
+                        }
+                }
+        } while (!free_position);
+}
 
 void handle_input(
     Direction direction,
@@ -93,10 +107,17 @@ void handle_input(
 
         switch (wParam)
         {
-                case VK_UP: break;
-                case VK_DOWN: break;
-                case VK_LEFT: break;
-                case VK_RIGHT: break;
-                default: break;
+                case VK_UP: 
+                        if (game_state.current_direction != DIR_DOWN) { game_state.input_direction = DIR_UP; }
+                        break;
+                case VK_DOWN:
+                        if (game_state.current_direction != DIR_UP) { game_state.input_direction = DIR_DOWN; }
+                        break;
+                case VK_LEFT: 
+                        if (game_state.current_direction != DIR_UP) { game_state.input_direction = DIR_DOWN; }
+                        break;
+                case VK_RIGHT: 
+                        if (game_state.current_direction != DIR_UP) { game_state.input_direction = DIR_DOWN; }
+                        break;
         }
 }
