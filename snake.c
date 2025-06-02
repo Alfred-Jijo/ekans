@@ -375,3 +375,74 @@ WindowProc(
     }
     return 0;
 }
+
+int WINAPI
+WinMain(
+    HINSTANCE hInstance,
+    HINSTANCE hPrevInstance,
+    LPSTR lpCmdLine,
+    int nCmdShow)
+{
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+
+    HWND hwnd;
+    MSG msg;
+    WNDCLASSEXW wc = {0}; 
+
+    wc.cbSize = sizeof(WNDCLASSEXW);
+    wc.style = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc = WindowProc; 
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hInstance = hInstance;
+    wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wc.lpszMenuName = NULL;
+    wc.lpszClassName = L"Ekans"; 
+    wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+
+    if (!RegisterClassExW(&wc)) {
+        MessageBoxW(NULL, L"Failed to register window class!",
+            L"Error", MB_ICONEXCLAMATION | MB_OK);
+        return 1;
+    }
+
+    RECT wndRect = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+    AdjustWindowRect(&wndRect, WS_OVERLAPPEDWINDOW, FALSE);
+    int adjustedWidth = wndRect.right - wndRect.left;
+    int adjustedHeight = wndRect.bottom - wndRect.top;
+
+    hwnd = CreateWindowExW(
+        WS_EX_CLIENTEDGE,
+        L"Ekans",
+        L"Ekans - Snake Game", 
+        WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX, 
+        CW_USEDEFAULT, CW_USEDEFAULT,
+        adjustedWidth, adjustedHeight,
+        NULL, NULL, hInstance, NULL
+    );
+
+    if (!hwnd) {
+        MessageBoxW(NULL, L"Failed to create window!",
+            L"Error", MB_ICONEXCLAMATION | MB_OK);
+        return 1;
+    }
+
+    game_state.hwnd_main = hwnd;
+
+    ShowWindow(hwnd, nCmdShow); 
+    UpdateWindow(hwnd);         
+
+    srand((unsigned int)time(NULL)); 
+    init_game();                     
+
+    // Main message loop
+    while (GetMessage(&msg, NULL, 0, 0) > 0) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return (int)msg.wParam;
+}
