@@ -193,3 +193,70 @@ update_game(void)
     }
     game_state.snake[0] = new_head; 
 }
+
+/**
+ * @brief Draws all game elements onto the screen.
+ * @param hdc Device context handle.
+ */
+void
+draw_game(
+    HDC hdc)
+{
+    // Double buffering to reduce flicker
+    HDC hdcMem = CreateCompatibleDC(hdc);
+    HBITMAP hbmMem = CreateCompatibleBitmap(hdc, WINDOW_WIDTH, WINDOW_HEIGHT);
+    HANDLE hOldBitmap = SelectObject(hdcMem, hbmMem);
+
+    // Draw background
+    HBRUSH bgBrush = CreateSolidBrush(RGB(220, 220, 220)); 
+    RECT clientRect = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+    FillRect(hdcMem, &clientRect, bgBrush);
+    DeleteObject(bgBrush);
+
+    // Draw snake
+    HBRUSH snakeBrush = CreateSolidBrush(RGB(0, 128, 0));
+    for (int i = 0; i < game_state.snake_length; ++i) {
+        RECT segmentRect = {
+            game_state.snake[i].x * CELL_SIZE,
+            game_state.snake[i].y * CELL_SIZE,
+            (game_state.snake[i].x + 1) * CELL_SIZE,
+            (game_state.snake[i].y + 1) * CELL_SIZE
+        };
+        FillRect(hdcMem, &segmentRect, snakeBrush);
+    }
+    DeleteObject(snakeBrush);
+
+    // Draw food
+    HBRUSH foodBrush = CreateSolidBrush(RGB(255, 0, 0)); 
+    RECT foodRect = {
+        game_state.food.x * CELL_SIZE,
+        game_state.food.y * CELL_SIZE,
+        (game_state.food.x + 1) * CELL_SIZE,
+        (game_state.food.y + 1) * CELL_SIZE
+    };
+    FillRect(hdcMem, &foodRect, foodBrush);
+    DeleteObject(foodBrush);
+
+    // Draw score
+    WCHAR scoreText[50];
+    swprintf_s(scoreText, 50, L"Score: %d", game_state.score);
+    SetTextColor(hdcMem, RGB(0, 0, 0)); 
+    SetBkMode(hdcMem, TRANSPARENT);    
+    TextOutW(hdcMem, 10, 10, scoreText, lstrlenW(scoreText));
+
+    // Draw Game Over message if applicable
+    if (game_state.game_over) {
+        WCHAR gameOverText[] = L"GAME OVER! Press 'R' to Restart.";
+        SetTextAlign(hdcMem, TA_CENTER | TA_BASELINE);
+        TextOutW(hdcMem, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, gameOverText, lstrlenW(gameOverText));
+        SetTextAlign(hdcMem, TA_LEFT | TA_TOP); 
+    }
+
+    // Copy buffer to screen
+    BitBlt(hdc, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, hdcMem, 0, 0, SRCCOPY);
+
+    // Clean up GDI objects for double buffering
+    SelectObject(hdcMem, hOldBitmap);
+    DeleteObject(hbmMem);
+    DeleteDC(hdcMem);
+}
