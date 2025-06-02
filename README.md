@@ -3,7 +3,7 @@ Snake clone using Win32 and C17
 
 # Build
 build with cl:
-```cmd
+```shell
 cl snake.c /Fe:snake_game.exe user32.lib gdi32.lib /Wall /std:c17
 ```
 
