@@ -260,3 +260,58 @@ draw_game(
     DeleteObject(hbmMem);
     DeleteDC(hdcMem);
 }
+
+/**
+ * @brief Generates food at a random valid position on the grid.
+ */
+void
+generate_food(void)
+{
+    bool free_position;
+    do {
+        free_position = true;
+        game_state.food.x = rand() % GRID_WIDTH;
+        game_state.food.y = rand() % GRID_HEIGHT;
+
+        // Check if the new food position is on the snake
+        for (int i = 0; i < game_state.snake_length; ++i) {
+            if (game_state.food.x == game_state.snake[i].x && 
+                game_state.food.y == game_state.snake[i].y) {
+                free_position = false;
+                break;
+            }
+        }
+    } while (!free_position);
+}
+
+/**
+ * @brief Handles keyboard input.
+ * @param wParam Virtual-key code.
+ */
+void
+handle_input(
+    WPARAM wParam)
+{
+    if (game_state.game_over) {
+        if (wParam == 'R' || wParam == 'r') {
+            restart_game();
+        }
+        return;
+    }
+
+    // Buffer the input direction, actual change happens in update_game
+    switch (wParam) {
+        case VK_UP:
+            if (game_state.current_direction != DIR_DOWN) { game_state.input_direction = DIR_UP; }
+            break;
+        case VK_DOWN:
+            if (game_state.current_direction != DIR_UP) { game_state.input_direction = DIR_DOWN; }
+            break;
+        case VK_LEFT:
+            if (game_state.current_direction != DIR_RIGHT) { game_state.input_direction = DIR_LEFT; }
+            break;
+        case VK_RIGHT:
+            if (game_state.current_direction != DIR_LEFT) { game_state.input_direction = DIR_RIGHT; }
+            break;
+    }
+}
