@@ -82,3 +82,40 @@ GameState game_state = {
     .game_speed = GAME_SPEED,
     .hwnd_main = NULL // Will be set after window creation
 };
+
+void init_game(void);
+void restart_game(void);
+void update_game(void);
+void draw_game(HDC hdc);
+void generate_food(void);
+void handle_input(WPARAM wParam);
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+
+/**
+ * @brief Initializes the game state, snake position, food, and timer.
+ */
+void
+init_game(void)
+{
+    int start_x = GRID_WIDTH / 4;
+    int start_y = GRID_HEIGHT / 2;
+    for (int i = 0; i < game_state.snake_length; ++i) {
+        game_state.snake[i].x = start_x - i;
+        game_state.snake[i].y = start_y;
+    }
+
+    generate_food();
+
+    // Kill existing timer if any, then set a new one
+    if (game_state.timer_id != 0) {
+        KillTimer(game_state.hwnd_main, game_state.timer_id);
+    }
+    game_state.timer_id = SetTimer(game_state.hwnd_main, GAME_TIMER_ID, game_state.game_speed, NULL);
+
+    if (game_state.timer_id == 0 && game_state.hwnd_main != NULL) {
+        MessageBoxW(game_state.hwnd_main,
+            L"Failed to set timer in init_game!", L"Error", MB_OK | MB_ICONERROR);
+        PostQuitMessage(0);
+    }
+}
