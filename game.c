@@ -22,7 +22,7 @@ init_game (void)
             game_state.snake[i].y = start_y;
         }
 
-        //generate_food();
+        generate_food();
 
         if (game_state.hwnd_main == NULL) {
             fprintf(stderr, "Error: hwnd_main is not set.\n");
