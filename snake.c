@@ -120,3 +120,17 @@ init_game(void)
     }
 }
 
+/**
+ * @brief Resets game state for a new game.
+ */
+void
+restart_game(void)
+{
+    game_state.snake_length = INITIAL_SNEK_LENGTH;
+    game_state.current_direction = DIR_RIGHT;
+    game_state.input_direction = DIR_RIGHT; 
+    game_state.game_over = false;
+    game_state.score = 0;
+
+    init_game();
+}
