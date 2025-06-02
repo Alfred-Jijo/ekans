@@ -134,3 +134,62 @@ restart_game(void)
 
     init_game();
 }
+
+/**
+ * @brief Updates the game state per frame/timer tick.
+ */
+void
+update_game(void)
+{
+    if (game_state.game_over) {
+        return;
+    }
+
+    if ((game_state.input_direction == DIR_UP && game_state.current_direction != DIR_DOWN) ||
+        (game_state.input_direction == DIR_DOWN && game_state.current_direction != DIR_UP) ||
+        (game_state.input_direction == DIR_LEFT && game_state.current_direction != DIR_RIGHT) ||
+        (game_state.input_direction == DIR_RIGHT && game_state.current_direction != DIR_LEFT)) {
+        game_state.current_direction = game_state.input_direction;
+    }
+
+    // Calculate new head position
+    POINT new_head = game_state.snake[0]; 
+    switch (game_state.current_direction) {
+        case DIR_UP:    new_head.y--; break;
+        case DIR_DOWN:  new_head.y++; break;
+        case DIR_LEFT:  new_head.x--; break;
+        case DIR_RIGHT: new_head.x++; break;
+        case DIR_NONE:  return; 
+    }
+
+    // Check for wall collision
+    if (new_head.x < 0 || new_head.x >= GRID_WIDTH ||
+        new_head.y < 0 || new_head.y >= GRID_HEIGHT) {
+        game_state.game_over = true;
+        return;
+    }
+
+    // Check for self-collision 
+    for (int i = 0; i < game_state.snake_length; ++i) {
+        if (new_head.x == game_state.snake[i].x && new_head.y == game_state.snake[i].y) {
+            game_state.game_over = true;
+            return;
+        }
+    }
+
+    // Check for food consumption
+    bool food_eaten = (new_head.x == game_state.food.x && new_head.y == game_state.food.y);
+
+    if (food_eaten) {
+        game_state.score += 10;
+        if (game_state.snake_length < MAX_SNEK_LENGTH) { 
+            game_state.snake_length++;
+        }
+        generate_food();
+    }
+
+    for (int i = game_state.snake_length - 1; i > 0; --i) {
+        game_state.snake[i] = game_state.snake[i - 1];
+    }
+    game_state.snake[0] = new_head; 
+}
