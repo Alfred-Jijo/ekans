@@ -315,3 +315,63 @@ handle_input(
             break;
     }
 }
+
+/**
+ * @brief Window procedure to handle messages for the main window.
+ */
+LRESULT CALLBACK
+WindowProc( 
+    HWND hwnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam)
+{
+    switch (uMsg) { 
+        case WM_CREATE:
+            if (game_state.timer_id == 0 && game_state.hwnd_main != NULL) {
+                game_state.timer_id = SetTimer(hwnd, GAME_TIMER_ID, game_state.game_speed, NULL);
+                if (game_state.timer_id == 0) {
+                    MessageBoxW(hwnd, L"Could not Set Timer in WM_CREATE", L"Error", MB_OK | MB_ICONERROR);
+                    PostQuitMessage(1); 
+                }
+            }
+            break;
+
+        case WM_TIMER:
+            if (wParam == GAME_TIMER_ID) { 
+                if (!game_state.game_over) {
+                    update_game();
+                    InvalidateRect(hwnd, NULL, TRUE); 
+                }
+            }
+            break;
+
+        case WM_PAINT:
+            {
+                PAINTSTRUCT ps;
+                HDC hdc = BeginPaint(hwnd, &ps);
+                draw_game(hdc);
+                EndPaint(hwnd, &ps);
+            }
+            break;
+
+        case WM_KEYDOWN:
+            handle_input(wParam); 
+            break;
+
+        case WM_ERASEBKGND:
+            return 1; 
+
+        case WM_DESTROY:
+            if (game_state.timer_id != 0) {
+                KillTimer(hwnd, game_state.timer_id);
+                game_state.timer_id = 0;
+            }
+            PostQuitMessage(0);
+            break;
+
+        default:
+            return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+    return 0;
+}
