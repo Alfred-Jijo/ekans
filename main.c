@@ -52,7 +52,7 @@ int WinMain(
                 WS_EX_CLIENTEDGE,
                 L"Ekans", 
                 L"Ekans - Snake Game",
-                WS_OVERLAPPEDWINDOW, & ~WS_THICKFRAME, & ~WS_MAXIMIZEBOX,
+                WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
                 CW_USEDEFAULT, CW_USEDEFAULT,
                 adjustedWidth, adjustedHeight,
                 NULL, NULL, hInstance, NULL 
