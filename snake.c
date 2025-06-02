@@ -119,3 +119,4 @@ init_game(void)
         PostQuitMessage(0);
     }
 }
+
