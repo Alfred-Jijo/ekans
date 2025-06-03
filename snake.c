@@ -114,7 +114,7 @@ init_game(void)
         GetClientRect(game_state.hwnd_main, &rcClient);
         game_state.client_width = rcClient.right - rcClient.left;
         game_state.client_height = rcClient.bottom - rcClient.top;
-        update_drawing_dimensions();
+        update_dimensions();
     }
 
 	int start_x = GRID_WIDTH / 4;
