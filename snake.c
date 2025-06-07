@@ -53,11 +53,11 @@ static_assert(MAX_SNEK_LENGTH <= (GRID_WIDTH * GRID_HEIGHT), "MAX_SNEK_LENGTH ca
 static_assert(GAME_SPEED > 0, "GAME_SPEED must be positive.");
 
 typedef enum {
-		DIR_UP,
-		DIR_DOWN,
-		DIR_LEFT,
-		DIR_RIGHT,
-		DIR_NONE 
+        DIR_UP,
+        DIR_DOWN,
+        DIR_LEFT,
+        DIR_RIGHT,
+        DIR_NONE
 } Direction;
 
 typedef struct GameGlobalState {
