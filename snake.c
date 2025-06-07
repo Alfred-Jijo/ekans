@@ -53,11 +53,11 @@ static_assert(MAX_SNEK_LENGTH <= (GRID_WIDTH * GRID_HEIGHT), "MAX_SNEK_LENGTH ca
 static_assert(GAME_SPEED > 0, "GAME_SPEED must be positive.");
 
 typedef enum {
-        DIR_UP,
-        DIR_DOWN,
-        DIR_LEFT,
-        DIR_RIGHT,
-        DIR_NONE
+	DIR_UP,
+	DIR_DOWN,
+	DIR_LEFT,
+	DIR_RIGHT,
+	DIR_NONE
 } Direction;
 
 typedef struct GameGlobalState {
@@ -110,12 +110,12 @@ init_game(void)
 {
 
 	if (game_state.hwnd_main && (game_state.client_width == 0 || game_state.client_height == 0) ) {
-        RECT rcClient;
-        GetClientRect(game_state.hwnd_main, &rcClient);
-        game_state.client_width = rcClient.right - rcClient.left;
-        game_state.client_height = rcClient.bottom - rcClient.top;
-        update_dimensions();
-    }
+		RECT rcClient;
+		GetClientRect(game_state.hwnd_main, &rcClient);
+		game_state.client_width = rcClient.right - rcClient.left;
+		game_state.client_height = rcClient.bottom - rcClient.top;
+		update_dimensions();
+	}
 
 	int start_x = GRID_WIDTH / 4;
 	int start_y = GRID_HEIGHT / 2;
